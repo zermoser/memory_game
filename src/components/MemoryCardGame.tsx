@@ -2,7 +2,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import Confetti from 'react-confetti';
-import { Clock, RotateCw, Star, Trophy, HelpCircle } from 'lucide-react';
+import {
+  Clock,
+  RotateCw,
+  Star,
+  Trophy,
+  Sparkles,
+  Palette,
+  Heart,
+  Gem,
+  Flower,
+  Leaf,
+  Cherry
+} from 'lucide-react';
 
 type Card = {
   id: number;
@@ -17,7 +29,8 @@ const MemoryCardGame: React.FC = () => {
   const allIcons = [
     '🍎', '🍊', '🍇', '🍓', '🍒', '🍑',
     '🥝', '🥥', '🍍', '🥭', '🍋', '🍉',
-    '🌿', '🍄', '🌻', '🌷', '🌼', '🌸'
+    '🌿', '🍄', '🌻', '🌷', '🌼', '🌸',
+    '🦋', '🐞', '🐢', '🐬', '🦄', '🌈'
   ];
 
   const [difficulty, setDifficulty] = useState<Difficulty>('medium');
@@ -175,8 +188,51 @@ const MemoryCardGame: React.FC = () => {
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
+  // Pastel color palette
+  const colors = {
+    background: "linear-gradient(135deg, #f9d7ff 0%, #d1e9ff 50%, #d0f4ff 100%)",
+    cardBack: "linear-gradient(135deg, #ffcbf2, #f3c4fb)",
+    easy: "linear-gradient(135deg, #b5ead7, #c7ceea)",
+    medium: "linear-gradient(135deg, #ffdac1, #ffb7b2)",
+    hard: "linear-gradient(135deg, #ffafcc, #cdb4db)",
+    button: "linear-gradient(135deg, #ff9aa2, #ffb7b2, #ffdac1)",
+    accent: "#ff9e93",
+    text: "#5a5a72"
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pastel-blue-50 to-pastel-purple-50 text-gray-800 p-4 flex flex-col items-center justify-center font-sans">
+    <div
+      className="min-h-screen text-gray-800 p-4 flex flex-col items-center justify-center font-sans overflow-hidden relative"
+      style={{ background: colors.background }}
+    >
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full opacity-20"
+            style={{
+              background: `radial-gradient(circle, ${['#ff9aa2', '#ffb7b2', '#ffdac1'][i % 3]} 0%, transparent 70%)`,
+              width: `${Math.random() * 200 + 100}px`,
+              height: `${Math.random() * 200 + 100}px`,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              x: [0, (Math.random() - 0.5) * 50],
+              y: [0, (Math.random() - 0.5) * 50],
+              scale: [1, 1.1, 1],
+            }}
+            transition={{
+              duration: Math.random() * 10 + 10,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+      </div>
+
       {/* Confetti effect when game is completed */}
       {gameCompleted && (
         <Confetti
@@ -184,33 +240,47 @@ const MemoryCardGame: React.FC = () => {
           height={windowSize.height}
           recycle={false}
           numberOfPieces={500}
-          colors={['#A5D8FF', '#FFD6FF', '#CAFFBF', '#FDFFB6', '#FFADAD']}
+          colors={['#FFD6FF', '#E7C6FF', '#C8B6FF', '#B8C0FF', '#BBD0FF']}
         />
       )}
 
       <motion.div
-        className="max-w-4xl w-full bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-pastel-blue-200"
+        className="max-w-4xl w-full bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border-4 border-white"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
       >
         <div className="p-6 md:p-8">
           <div className="text-center mb-8">
+            <motion.div
+              className="flex justify-center mb-4"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1, rotate: [0, 10, -10, 5, 0] }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+            >
+              <Sparkles className="text-pink-400 w-10 h-10" />
+              <Palette className="text-blue-400 w-10 h-10" />
+              <Heart className="text-red-400 w-10 h-10" />
+            </motion.div>
+
             <motion.h1
-              className="text-3xl md:text-4xl font-bold text-gray-800 mb-2"
+              className="text-4xl md:text-5xl font-bold mb-2"
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
-              transition={{ delay: 0.2 }}
+              transition={{ delay: 0.3 }}
+              style={{
+                background: "linear-gradient(90deg, #FF9E93 0%, #FFB6C1 30%, #87CEEB 70%, #98D8C0 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent"
+              }}
             >
-              <span className="bg-gradient-to-r from-pastel-purple-500 to-pastel-pink-500 bg-clip-text text-transparent">
-                Memory Match
-              </span>
+              Pastel Memory Match
             </motion.h1>
             <motion.p
-              className="text-gray-600"
+              className="text-lg text-gray-600"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.5 }}
             >
               Match pairs of cards to win the game
             </motion.p>
@@ -218,84 +288,101 @@ const MemoryCardGame: React.FC = () => {
 
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             <motion.div
-              className="bg-pastel-blue-100 px-4 py-2 rounded-lg flex items-center shadow-sm border border-pastel-blue-200"
-              whileHover={{ scale: 1.05 }}
+              className="bg-white px-4 py-3 rounded-xl flex items-center shadow-lg border-2 border-blue-100"
+              whileHover={{ scale: 1.05, rotate: 1 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Clock className="text-pastel-blue-500 mr-2 w-5 h-5" />
-              <span className="font-medium text-pastel-blue-800">{formatTime(timer)}</span>
+              <Clock className="text-blue-400 mr-2 w-6 h-6" />
+              <span className="font-bold text-blue-600">{formatTime(timer)}</span>
             </motion.div>
 
             <motion.div
-              className="bg-pastel-green-100 px-4 py-2 rounded-lg flex items-center shadow-sm border border-pastel-green-200"
-              whileHover={{ scale: 1.05 }}
+              className="bg-white px-4 py-3 rounded-xl flex items-center shadow-lg border-2 border-green-100"
+              whileHover={{ scale: 1.05, rotate: -1 }}
               whileTap={{ scale: 0.95 }}
             >
-              <RotateCw className="text-pastel-green-500 mr-2 w-5 h-5" />
-              <span className="font-medium text-pastel-green-800">{moves} moves</span>
+              <RotateCw className="text-green-400 mr-2 w-6 h-6" />
+              <span className="font-bold text-green-600">{moves} moves</span>
             </motion.div>
 
             <motion.div
-              className="bg-pastel-yellow-100 px-4 py-2 rounded-lg flex items-center shadow-sm border border-pastel-yellow-200"
-              whileHover={{ scale: 1.05 }}
+              className="bg-white px-4 py-3 rounded-xl flex items-center shadow-lg border-2 border-yellow-100"
+              whileHover={{ scale: 1.05, rotate: 1 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Star className="text-pastel-yellow-500 mr-2 w-5 h-5" />
-              <span className="font-medium text-pastel-yellow-800">{score} points</span>
+              <Star className="text-yellow-400 mr-2 w-6 h-6" />
+              <span className="font-bold text-yellow-600">{score} points</span>
             </motion.div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-3 mb-8">
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
             <motion.button
-              className={`px-4 py-2 rounded-lg transition-all text-sm font-medium ${difficulty === 'easy'
-                ? 'bg-pastel-green-100 text-pastel-green-800 border-2 border-pastel-green-300 shadow-inner'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-transparent'
+              className={`px-5 py-3 rounded-xl text-sm font-bold shadow-lg transition-all ${difficulty === 'easy'
+                ? 'text-white shadow-green-300'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
                 }`}
-              whileHover={{ scale: 1.05 }}
+              style={{ background: difficulty === 'easy' ? colors.easy : 'white' }}
+              whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => {
                 setDifficulty('easy');
                 setTimeout(startNewGame, 300);
               }}
             >
-              Easy
+              <span className="flex items-center">
+                <Leaf className="mr-2 w-4 h-4" />
+                Easy
+              </span>
             </motion.button>
 
             <motion.button
-              className={`px-4 py-2 rounded-lg transition-all text-sm font-medium ${difficulty === 'medium'
-                ? 'bg-pastel-blue-100 text-pastel-blue-800 border-2 border-pastel-blue-300 shadow-inner'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-transparent'
+              className={`px-5 py-3 rounded-xl text-sm font-bold shadow-lg transition-all ${difficulty === 'medium'
+                ? 'text-white shadow-orange-300'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
                 }`}
-              whileHover={{ scale: 1.05 }}
+              style={{ background: difficulty === 'medium' ? colors.medium : 'white' }}
+              whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => {
                 setDifficulty('medium');
                 setTimeout(startNewGame, 300);
               }}
             >
-              Medium
+              <span className="flex items-center">
+                <Flower className="mr-2 w-4 h-4" />
+                Medium
+              </span>
             </motion.button>
 
             <motion.button
-              className={`px-4 py-2 rounded-lg transition-all text-sm font-medium ${difficulty === 'hard'
-                ? 'bg-pastel-pink-100 text-pastel-pink-800 border-2 border-pastel-pink-300 shadow-inner'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-transparent'
+              className={`px-5 py-3 rounded-xl text-sm font-bold shadow-lg transition-all ${difficulty === 'hard'
+                ? 'text-white shadow-purple-300'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
                 }`}
-              whileHover={{ scale: 1.05 }}
+              style={{ background: difficulty === 'hard' ? colors.hard : 'white' }}
+              whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => {
                 setDifficulty('hard');
                 setTimeout(startNewGame, 300);
               }}
             >
-              Hard
+              <span className="flex items-center">
+                <Gem className="mr-2 w-4 h-4" />
+                Hard
+              </span>
             </motion.button>
           </div>
 
           <div className="flex justify-center mb-8">
             <motion.button
-              className="px-6 py-3 bg-gradient-to-r from-pastel-purple-400 to-pastel-pink-400 text-white font-medium rounded-lg hover:opacity-90 transition-all shadow-md flex items-center gap-2"
-              whileHover={{ scale: 1.05 }}
+              className="px-7 py-3 text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-xl flex items-center gap-2"
+              style={{ background: colors.button }}
+              whileHover={{
+                scale: 1.05,
+                y: -3,
+                boxShadow: "0 10px 25px rgba(255, 154, 162, 0.4)"
+              }}
               whileTap={{ scale: 0.95 }}
               onClick={startNewGame}
             >
@@ -308,36 +395,43 @@ const MemoryCardGame: React.FC = () => {
           <div className={`grid ${difficulty === 'easy' ? 'grid-cols-4' :
             difficulty === 'medium' ? 'grid-cols-4 md:grid-cols-6' :
               'grid-cols-4 md:grid-cols-8'
-            } gap-3 md:gap-4 justify-center`}>
+            } gap-4 md:gap-5 justify-center`}>
             {cards.map(card => (
               <motion.div
                 key={card.id}
                 onClick={() => flipCard(card.id)}
                 className={`aspect-square cursor-pointer relative`}
                 style={{ perspective: '1000px' }}
-                whileHover={{ scale: 1.03 }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
                 layout
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
                 <motion.div
-                  className={`absolute inset-0 rounded-xl shadow-sm flex items-center justify-center text-3xl transition-all duration-300 ${card.isFlipped || card.isMatched
-                      ? 'opacity-0 rotate-y-90 bg-gradient-to-br from-gray-200 to-gray-300'
-                      : 'opacity-100 rotate-y-0 bg-gradient-to-br from-pastel-blue-300 to-pastel-purple-300'
+                  className={`absolute inset-0 rounded-2xl shadow-lg flex items-center justify-center text-4xl transition-all duration-300 ${card.isFlipped || card.isMatched
+                    ? 'opacity-0 rotate-y-90'
+                    : 'opacity-100 rotate-y-0'
                     }`}
+                  style={{ background: colors.cardBack }}
                   animate={{
                     rotateY: card.isFlipped || card.isMatched ? 90 : 0,
                     opacity: card.isFlipped || card.isMatched ? 0 : 1
                   }}
                   transition={{ duration: 0.3 }}
                 >
-                  <HelpCircle className="w-10 h-10 text-white opacity-80" />
+                  <motion.div
+                    className="w-14 h-14 rounded-full bg-white/30 flex items-center justify-center text-white"
+                    animate={{ rotate: [0, 5, -5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <Cherry className="w-8 h-8 opacity-80" />
+                  </motion.div>
                 </motion.div>
 
                 <motion.div
-                  className={`absolute inset-0 rounded-xl shadow-sm flex items-center justify-center text-3xl md:text-4xl ${card.isMatched
-                      ? 'bg-gradient-to-br from-pastel-green-100 to-pastel-green-200 border-2 border-pastel-green-300'
-                      : 'bg-white'
+                  className={`absolute inset-0 rounded-2xl shadow-lg flex items-center justify-center text-4xl md:text-5xl ${card.isMatched
+                    ? 'bg-gradient-to-br from-green-100 to-green-200 border-4 border-green-300'
+                    : 'bg-white'
                     }`}
                   animate={{
                     rotateY: card.isFlipped || card.isMatched ? 0 : -90,
@@ -345,72 +439,130 @@ const MemoryCardGame: React.FC = () => {
                   }}
                   transition={{ duration: 0.3 }}
                 >
-                  {card.icon}
+                  <motion.span
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      rotate: card.isMatched ? [0, 10, -10, 0] : 0
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {card.icon}
+                  </motion.span>
+
+                  {card.isMatched && (
+                    <motion.div
+                      className="absolute -top-2 -right-2"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1, rotate: [0, 360] }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Star className="w-6 h-6 text-yellow-400 fill-yellow-200" />
+                    </motion.div>
+                  )}
                 </motion.div>
               </motion.div>
             ))}
           </div>
 
           {/* Win screen */}
-          {gameCompleted && (
-            <AnimatePresence>
+          <AnimatePresence>
+            {gameCompleted && (
               <motion.div
-                className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+                className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
                 <motion.div
-                  className="bg-white p-8 rounded-2xl max-w-md w-full text-center shadow-xl border-2 border-pastel-purple-200"
+                  className="bg-gradient-to-br from-pink-100 to-blue-100 p-8 rounded-3xl max-w-md w-full text-center shadow-2xl border-4 border-white"
                   initial={{ scale: 0.8, y: 20 }}
                   animate={{ scale: 1, y: 0 }}
                   transition={{ type: "spring", damping: 15 }}
                 >
-                  <Trophy className="w-16 h-16 mx-auto text-pastel-yellow-500 mb-4" />
-                  <h2 className="text-2xl font-bold mb-4 text-gray-800">
-                    Congratulations! 🎉
-                  </h2>
+                  <motion.div
+                    className="mb-6"
+                    animate={{
+                      y: [0, -10, 0],
+                      rotate: [0, 10, -10, 0]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: "reverse"
+                    }}
+                  >
+                    <Trophy className="w-20 h-20 mx-auto text-yellow-500 fill-yellow-300" />
+                  </motion.div>
 
-                  <div className="space-y-3 mb-6 text-gray-600">
-                    <p className="flex justify-between items-center">
-                      <span className="flex items-center text-pastel-blue-600">
-                        <Clock className="mr-2 w-5 h-5" /> Time:
-                      </span>
-                      <span className="font-medium">{formatTime(timer)}</span>
-                    </p>
-                    <p className="flex justify-between items-center">
-                      <span className="flex items-center text-pastel-green-600">
-                        <RotateCw className="mr-2 w-5 h-5" /> Moves:
-                      </span>
-                      <span className="font-medium">{moves}</span>
-                    </p>
-                    <p className="flex justify-between items-center">
-                      <span className="flex items-center text-pastel-yellow-600">
-                        <Star className="mr-2 w-5 h-5" /> Score:
-                      </span>
-                      <span className="font-medium text-emerald-600">{score}</span>
-                    </p>
-                  </div>
+                  <motion.h2
+                    className="text-3xl font-bold mb-6 text-gray-800"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <span className="bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+                      You Win! 🎉
+                    </span>
+                  </motion.h2>
 
-                  <div className="flex justify-center">
+                  <motion.div
+                    className="space-y-4 mb-8 text-gray-700 bg-white/80 rounded-xl p-5 border-2 border-white"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <p className="flex justify-between items-center text-lg">
+                      <span className="flex items-center text-blue-600 font-medium">
+                        <Clock className="mr-3 w-5 h-5" /> Time:
+                      </span>
+                      <span className="font-bold">{formatTime(timer)}</span>
+                    </p>
+                    <p className="flex justify-between items-center text-lg">
+                      <span className="flex items-center text-green-600 font-medium">
+                        <RotateCw className="mr-3 w-5 h-5" /> Moves:
+                      </span>
+                      <span className="font-bold">{moves}</span>
+                    </p>
+                    <p className="flex justify-between items-center text-lg">
+                      <span className="flex items-center text-yellow-600 font-medium">
+                        <Star className="mr-3 w-5 h-5" /> Score:
+                      </span>
+                      <span className="font-bold text-purple-700 text-xl">{score}</span>
+                    </p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
                     <motion.button
-                      className="px-6 py-3 bg-gradient-to-r from-pastel-purple-400 to-pastel-pink-400 text-white font-medium rounded-lg hover:opacity-90 transition-all flex items-center gap-2"
-                      whileHover={{ scale: 1.05 }}
+                      className="px-7 py-4 text-white font-bold rounded-xl hover:opacity-90 transition-all flex items-center gap-3 text-lg shadow-lg mx-auto"
+                      style={{ background: colors.button }}
+                      whileHover={{
+                        scale: 1.05,
+                        y: -3,
+                        boxShadow: "0 10px 25px rgba(255, 154, 162, 0.4)"
+                      }}
                       whileTap={{ scale: 0.95 }}
                       onClick={startNewGame}
                     >
-                      <RotateCw className="w-5 h-5" />
+                      <RotateCw className="w-6 h-6" />
                       Play Again
                     </motion.button>
-                  </div>
+                  </motion.div>
                 </motion.div>
               </motion.div>
-            </AnimatePresence>
-          )}
+            )}
+          </AnimatePresence>
         </div>
 
-        <div className="bg-pastel-blue-50 p-4 text-center text-gray-500 text-sm border-t border-pastel-blue-100">
-          Made with React, TypeScript & TailwindCSS | © {new Date().getFullYear()} Memory Match
+        <div className="bg-white/80 p-4 text-center text-gray-600 text-sm border-t-2 border-white">
+          <div className="flex items-center justify-center gap-1">
+            <span>Made with</span>
+            <Heart className="w-4 h-4 text-red-400 fill-red-300" />
+            <span>using React, TypeScript & TailwindCSS</span>
+          </div>
         </div>
       </motion.div>
     </div>
